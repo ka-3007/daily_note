@@ -5,22 +5,20 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreDiaryRequest;
 use App\Http\Requests\UpdateDiaryRequest;
 use App\Models\Diary;
+use App\Services\DiaryService;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 
 class DiaryController extends Controller
 {
+    public function __construct(private DiaryService $diaryService) {}
+
     // 一覧画面: ログインユーザーの日記を5件ずつページネーションして表示（昇順/降順切り替え可）
     public function index(): View
     {
         $order = request('order', 'desc') === 'asc' ? 'asc' : 'desc';
 
-        $diaries = auth()->user()
-            ->diaries()
-            ->orderBy('diary_number', $order)
-            ->paginate(5)
-            ->withQueryString();
+        $diaries = $this->diaryService->getList(auth()->user(), $order);
 
         return view('diaries.index', compact('diaries', 'order'));
     }
@@ -39,25 +37,14 @@ class DiaryController extends Controller
         return view('diaries.show', compact('diary'));
     }
 
-    // 投稿保存: バリデーション済みデータを受け取り、画像があれば保存してDBに登録
+    // 投稿保存: バリデーション済みデータをサービスに渡して日記を登録
     public function store(StoreDiaryRequest $request): RedirectResponse
     {
-        $validated = $request->validated();
-
-        $imagePath = null;
-        if ($request->hasFile('image')) {
-            // 画像を storage/app/public/diaries/ に保存し、パスを取得
-            $imagePath = $request->file('image')->store('diaries', 'public');
-        }
-
-        // 削除済みを含めた最大 diary_number に +1 して連番を採番する（番号の再利用防止）
-        $nextNumber = auth()->user()->diaries()->withTrashed()->max('diary_number') + 1;
-
-        auth()->user()->diaries()->create([
-            'diary_number' => $nextNumber,
-            'content'      => $validated['content'],
-            'image_path'   => $imagePath,
-        ]);
+        $this->diaryService->store(
+            auth()->user(),
+            $request->validated('content'),
+            $request->file('image')
+        );
 
         return redirect()->route('diaries.index')->with('success', '日記を投稿しました。');
     }
@@ -70,38 +57,24 @@ class DiaryController extends Controller
         return view('diaries.edit', compact('diary'));
     }
 
-    // 更新保存: 既存の画像があれば削除してから新しい画像を保存し、DBを更新
+    // 更新保存: バリデーション済みデータをサービスに渡して日記を更新
     public function update(UpdateDiaryRequest $request, Diary $diary): RedirectResponse
     {
-        $validated = $request->validated();
-
-        $imagePath = $diary->image_path;
-        if ($request->hasFile('image')) {
-            // 既存画像をストレージから削除してから新しい画像を保存
-            if ($imagePath) {
-                Storage::disk('public')->delete($imagePath);
-            }
-            $imagePath = $request->file('image')->store('diaries', 'public');
-        }
-
-        $diary->update([
-            'content'    => $validated['content'],
-            'image_path' => $imagePath,
-        ]);
+        $this->diaryService->update(
+            $diary,
+            $request->validated('content'),
+            $request->file('image')
+        );
 
         return redirect()->route('diaries.index')->with('success', '日記を更新しました。');
     }
 
-    // 削除: 本人の日記かを確認し、画像があればストレージからも削除してDBのレコードを削除
+    // 削除: 本人の日記かを確認してからサービスに削除を委譲
     public function destroy(Diary $diary): RedirectResponse
     {
         $this->authorize('delete', $diary);
 
-        if ($diary->image_path) {
-            Storage::disk('public')->delete($diary->image_path);
-        }
-
-        $diary->delete();
+        $this->diaryService->destroy($diary);
 
         return redirect()->route('diaries.index')->with('success', '日記を削除しました。');
     }

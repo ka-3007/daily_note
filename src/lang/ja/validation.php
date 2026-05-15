@@ -154,6 +154,7 @@ return [
         'email'                 => 'メールアドレス',
         'password'              => 'パスワード',
         'password_confirmation' => 'パスワード（確認）',
+        'current_password'      => '現在のパスワード',
         'content'               => '本文',
         'image'                 => '画像',
     ],
