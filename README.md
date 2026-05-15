@@ -5,7 +5,7 @@ Laravel を使った 1 行日記サイトです。
 ## 動作環境
 
 - Docker（Docker Compose v2 想定）
-- コンテナ内: PHP 8.4、MySQL 8.4、Nginx
+- コンテナ内: PHP 8.5、MySQL 9.7、Nginx
 - アプリ: Laravel 13
 
 ## 環境構築手順（初回・クリーンな状態から）
