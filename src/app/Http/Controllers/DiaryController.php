@@ -11,15 +11,18 @@ use Illuminate\View\View;
 
 class DiaryController extends Controller
 {
-    // 一覧画面: ログインユーザーの日記を新しい順に5件ずつページネーションして表示
+    // 一覧画面: ログインユーザーの日記を5件ずつページネーションして表示（昇順/降順切り替え可）
     public function index(): View
     {
+        $order = request('order', 'desc') === 'asc' ? 'asc' : 'desc';
+
         $diaries = auth()->user()
             ->diaries()
-            ->latest()
-            ->paginate(5);
+            ->orderBy('diary_number', $order)
+            ->paginate(5)
+            ->withQueryString();
 
-        return view('diaries.index', compact('diaries'));
+        return view('diaries.index', compact('diaries', 'order'));
     }
 
     // 新規投稿画面: 投稿フォームを表示

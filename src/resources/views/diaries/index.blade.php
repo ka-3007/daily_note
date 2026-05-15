@@ -1,17 +1,36 @@
 <x-app-layout>
-    {{-- ページタイトル + 新規投稿ボタン --}}
+    {{-- ページタイトル + 操作ボタン --}}
     <div class="flex items-center justify-between mb-6">
         <div>
             <h1 class="text-xl font-bold text-stone-900">日記</h1>
             <p class="mt-1 text-xs text-stone-500">あなたの1行日記</p>
         </div>
-        <a href="{{ route('diaries.create') }}"
-            class="inline-flex items-center gap-1.5 rounded-lg bg-teal-700 px-4 py-2 text-sm font-semibold text-white hover:bg-teal-800 transition">
-            <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
-            </svg>
-            新規投稿
-        </a>
+        <div class="flex items-center gap-2">
+            {{-- 昇順/降順トグル --}}
+            @php $nextOrder = $order === 'desc' ? 'asc' : 'desc'; @endphp
+            <a href="{{ route('diaries.index', ['order' => $nextOrder]) }}"
+                class="inline-flex items-center gap-1.5 rounded-lg border border-stone-300 bg-white px-3.5 py-2 text-sm font-medium text-stone-700 hover:bg-stone-100 transition">
+                @if ($order === 'desc')
+                    <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M3 4h13M3 8h9m-9 4h6m4 0l4-4m0 0l4 4m-4-4v12" />
+                    </svg>
+                    降順
+                @else
+                    <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M3 4h13M3 8h9m-9 4h9m5-4v12m0 0l-4-4m4 4l4-4" />
+                    </svg>
+                    昇順
+                @endif
+            </a>
+
+            <a href="{{ route('diaries.create') }}"
+                class="inline-flex items-center gap-1.5 rounded-lg bg-teal-700 px-4 py-2 text-sm font-semibold text-white hover:bg-teal-800 transition">
+                <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+                </svg>
+                新規投稿
+            </a>
+        </div>
     </div>
 
     {{-- 一覧 --}}
