@@ -6,7 +6,22 @@
   $submitLabel : ボタンのラベル
 --}}
 
-<form method="POST" action="{{ $action }}" enctype="multipart/form-data" class="space-y-6">
+<form method="POST" action="{{ $action }}" enctype="multipart/form-data" class="space-y-6"
+    x-data="{
+        imageError: '',
+        checkImageSize(e) {
+            const file = e.target.files[0];
+            const maxBytes = 5 * 1024 * 1024;
+            if (file && file.size > maxBytes) {
+                this.imageError = '画像は5MB以下のファイルを選択してください。';
+                e.target.value = '';
+            } else {
+                this.imageError = '';
+            }
+        }
+    }"
+    @submit.prevent="imageError ? null : $el.submit()"
+>
     @csrf
     @if ($method === 'PUT')
         @method('PUT')
@@ -50,6 +65,7 @@
             name="image"
             type="file"
             accept=".jpg,.jpeg"
+            @change="checkImageSize($event)"
             class="block w-full text-sm text-stone-600
                    file:mr-3 file:py-2 file:px-3.5
                    file:rounded-lg file:border-0
@@ -58,6 +74,7 @@
                    hover:file:bg-teal-100 cursor-pointer"
         />
         <p class="mt-1 text-xs text-stone-400">JPG 形式・5MB 以内</p>
+        <p x-show="imageError" x-text="imageError" class="mt-1 text-xs text-red-600"></p>
         <x-input-error :messages="$errors->get('image')" class="mt-1 text-xs" />
     </div>
 

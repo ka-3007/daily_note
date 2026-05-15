@@ -27,4 +27,11 @@ class UpdateDiaryRequest extends FormRequest
             'image'   => ['nullable', 'image', 'mimes:jpg,jpeg', 'max:5120'],
         ];
     }
+
+    public function messages(): array
+    {
+        return [
+            'image.max' => '画像は5MB以下のファイルを選択してください。',
+        ];
+    }
 }
