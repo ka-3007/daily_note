@@ -1,0 +1,33 @@
+name: daily-note
+
+services:
+  nginx:
+    build: ./docker/nginx
+    ports:
+      - "8080:80"
+    volumes:
+      - ../src:/var/www/src
+    depends_on:
+      - php
+
+  php:
+    build: ./docker/php
+    volumes:
+      - ../src:/var/www/src
+    depends_on:
+      - mysql
+
+  mysql:
+    image: mysql:8.4
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: daily_note
+      MYSQL_USER: laravel
+      MYSQL_PASSWORD: password
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+
+volumes:
+  mysql-data:
