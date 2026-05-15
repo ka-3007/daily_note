@@ -41,21 +41,13 @@ docker compose exec php composer install --no-interaction
 docker compose exec php php artisan key:generate
 ```
 
-### 5. ストレージの書き込み権限
-
-ログやキャッシュ書き込み用です（権限不足で 500 になるのを防ぎます）。
-
-```bash
-docker compose exec php chmod -R 775 storage bootstrap/cache
-```
-
-### 6. データベースマイグレーション
+### 5. データベースマイグレーション
 
 ```bash
 docker compose exec php php artisan migrate --force
 ```
 
-### 7. ストレージのシンボリックリンク作成
+### 6. ストレージのシンボリックリンク作成
 
 画像をアップロード・表示するために必要です。
 
@@ -63,7 +55,7 @@ docker compose exec php php artisan migrate --force
 docker compose exec php php artisan storage:link
 ```
 
-### 8. フロントエンドのビルド（Vite）
+### 7. フロントエンドのビルド（Vite）
 
 Blade + Breeze のアセット用です。
 
@@ -72,7 +64,7 @@ docker compose exec php npm ci
 docker compose exec php npm run build
 ```
 
-### 9. 動作確認
+### 8. 動作確認
 
 ブラウザで次を開きます。
 

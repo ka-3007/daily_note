@@ -1,10 +1,10 @@
-name: daily-note
+name: daily-note-test
 
 services:
   nginx:
     build: ./docker/nginx
     ports:
-      - "8080:80"
+      - '8080:80'
     volumes:
       - ../src:/var/www/src
     depends_on:
@@ -25,7 +25,7 @@ services:
       MYSQL_USER: laravel
       MYSQL_PASSWORD: password
     ports:
-      - "3306:3306"
+      - '3306:3306'
     volumes:
       - mysql-data:/var/lib/mysql
 
