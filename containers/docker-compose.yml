@@ -1,4 +1,4 @@
-name: daily-note-test
+name: daily-note
 
 services:
   nginx:
