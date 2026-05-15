@@ -1,6 +1,6 @@
 <x-guest-layout>
   <header class="mb-8">
-    <h1 class="text-2xl font-bold tracking-tight text-stone-900">{{ __('Log in') }}</h1>
+    <h1 class="text-2xl font-bold tracking-tight text-stone-900">ログイン</h1>
     <p class="mt-2 text-sm leading-relaxed text-stone-500">
       メールアドレスとパスワードでサインインしてください。
     </p>
@@ -14,7 +14,7 @@
     @csrf
 
     <div>
-      <x-input-label for="email" class="mb-1.5 text-stone-700" :value="__('Email')" />
+      <x-input-label for="email" class="mb-1.5 text-stone-700" value="メールアドレス" />
       <x-text-input id="email"
         class="block w-full border-stone-300 bg-stone-50/50 text-stone-900 placeholder:text-stone-400 focus:border-teal-600 focus:ring-teal-600"
         type="email" name="email" :value="old('email')" autofocus autocomplete="username"
@@ -23,7 +23,7 @@
     </div>
 
     <div>
-      <x-input-label for="password" class="mb-1.5 text-stone-700" :value="__('Password')" />
+      <x-input-label for="password" class="mb-1.5 text-stone-700" value="パスワード" />
       <x-text-input id="password"
         class="block w-full border-stone-300 bg-stone-50/50 text-stone-900 placeholder:text-stone-400 focus:border-teal-600 focus:ring-teal-600"
         type="password" name="password" autocomplete="current-password" placeholder="••••••••" />
@@ -33,13 +33,13 @@
     <div class="flex items-center gap-2">
       <input id="remember_me" type="checkbox" name="remember"
         class="h-4 w-4 rounded border-stone-300 text-teal-700 shadow-sm focus:ring-teal-600">
-      <label for="remember_me" class="text-sm text-stone-600 select-none">{{ __('Remember me') }}</label>
+      <label for="remember_me" class="text-sm text-stone-600 select-none">ログイン状態を保持する</label>
     </div>
 
     <div>
       <x-primary-button
         class="w-full justify-center rounded-lg py-2.5 text-sm font-semibold normal-case tracking-normal">
-        {{ __('Log in') }}
+        ログイン
       </x-primary-button>
     </div>
   </form>
@@ -48,7 +48,7 @@
     アカウントをお持ちでない方は
     <a href="{{ route('register') }}"
       class="font-semibold text-teal-700 underline decoration-teal-700/30 underline-offset-2 transition hover:text-teal-800 hover:decoration-teal-800/50">
-      {{ __('Register') }}
+      新規登録
     </a>
   </p>
 </x-guest-layout>
