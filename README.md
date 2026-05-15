@@ -55,7 +55,15 @@ docker compose exec php chmod -R 775 storage bootstrap/cache
 docker compose exec php php artisan migrate --force
 ```
 
-### 7. フロントエンドのビルド（Vite）
+### 7. ストレージのシンボリックリンク作成
+
+画像をアップロード・表示するために必要です。
+
+```bash
+docker compose exec php php artisan storage:link
+```
+
+### 8. フロントエンドのビルド（Vite）
 
 Blade + Breeze のアセット用です。
 
@@ -64,7 +72,7 @@ docker compose exec php npm ci
 docker compose exec php npm run build
 ```
 
-### 8. 動作確認
+### 9. 動作確認
 
 ブラウザで次を開きます。
 
