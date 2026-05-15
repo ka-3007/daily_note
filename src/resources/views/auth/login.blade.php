@@ -37,8 +37,7 @@
     </div>
 
     <div>
-      <x-primary-button
-        class="w-full justify-center rounded-lg py-2.5 text-sm font-semibold normal-case tracking-normal">
+      <x-primary-button class="w-full py-2.5">
         ログイン
       </x-primary-button>
     </div>

@@ -42,8 +42,7 @@
     </div>
 
     <div class="pt-1">
-      <x-primary-button
-        class="w-full justify-center rounded-lg py-2.5 text-sm font-semibold normal-case tracking-normal">
+      <x-primary-button class="w-full py-2.5">
         新規登録
       </x-primary-button>
     </div>
