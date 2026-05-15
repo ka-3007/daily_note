@@ -47,9 +47,13 @@ class DiaryController extends Controller
             $imagePath = $request->file('image')->store('diaries', 'public');
         }
 
+        // 削除済みを含めた最大 diary_number に +1 して連番を採番する（番号の再利用防止）
+        $nextNumber = auth()->user()->diaries()->withTrashed()->max('diary_number') + 1;
+
         auth()->user()->diaries()->create([
-            'content'    => $validated['content'],
-            'image_path' => $imagePath,
+            'diary_number' => $nextNumber,
+            'content'      => $validated['content'],
+            'image_path'   => $imagePath,
         ]);
 
         return redirect()->route('diaries.index')->with('success', '日記を投稿しました。');
