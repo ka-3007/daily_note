@@ -150,9 +150,11 @@ return [
     'uuid' => ':attributeは有効なUUIDにしてください。',
 
     'attributes' => [
-        'name' => '名前',
-        'email' => 'メールアドレス',
-        'password' => 'パスワード',
+        'name'                  => '名前',
+        'email'                 => 'メールアドレス',
+        'password'              => 'パスワード',
         'password_confirmation' => 'パスワード（確認）',
+        'content'               => '本文',
+        'image'                 => '画像',
     ],
 ];
